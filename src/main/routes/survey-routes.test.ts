@@ -40,7 +40,7 @@ describe('Survey Routes', () => {
         }).expect(403)
     })
 
-    test('Should return 204 on add survey with accessToken', async () => {
+    test('Should return 204 on add survey with valid accessToken', async () => {
       const res = await accountCollection.insertOne({
         name: 'Test Name',
         email: 'test_email@email.com',
