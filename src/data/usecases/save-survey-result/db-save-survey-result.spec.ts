@@ -33,7 +33,7 @@ const makeFakeSaveSurveyResultData = (): SaveSurveyResultModel => ({
   date: new Date()
 })
 
-const makeFakeSaveSurveyResult = (): SurveyResultModel => Object.assign({
+const makeFakeSaveSurveyResult = (): SurveyResultModel => Object.assign(makeFakeSaveSurveyResultData(), {
   id: 'any_id'
 })
 
@@ -59,5 +59,11 @@ describe('DbSaveSurveyResult', () => {
     jest.spyOn(saveSurveyResultRepositoryStub, 'save').mockRejectedValueOnce(new Error())
     const promise = sut.save(makeFakeSaveSurveyResultData())
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should return SaveResult on success', async () => {
+    const { sut } = makeSut()
+    const surveyResult = await sut.save(makeFakeSaveSurveyResultData())
+    expect(surveyResult).toEqual(makeFakeSaveSurveyResult())
   })
 })
