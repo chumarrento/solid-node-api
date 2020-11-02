@@ -2,8 +2,8 @@ import { LoadSurveyById, SurveyModel, HttpRequest, SaveSurveyResult, SaveSurveyR
 import { SaveSurveyResultController } from './save-survey-result-controller'
 import { forbidden, serverError, success } from '@/presentation/helpers/http/http-helper'
 import { InvalidParamError } from '@/presentation/errors'
-
 import Mockdate from 'mockdate'
+import { mockSurveyModel, mockSurveyResultModel } from '@/domain/test'
 
 type SutTypes = {
   sut: SaveSurveyResultController
@@ -25,7 +25,7 @@ const makeSut = (): SutTypes => {
 const makeLoadSurveyByIdStub = (): LoadSurveyById => {
   class LoadSurveyByIdStub implements LoadSurveyById {
     async loadById (id: string): Promise<SurveyModel> {
-      return new Promise(resolve => resolve(makeFakeSurvey()))
+      return new Promise(resolve => resolve(mockSurveyModel()))
     }
   }
   return new LoadSurveyByIdStub()
@@ -34,29 +34,11 @@ const makeLoadSurveyByIdStub = (): LoadSurveyById => {
 const makeSaveSurveyResultStub = (): SaveSurveyResult => {
   class SaveSurveyResultStub implements SaveSurveyResult {
     async save (data: SaveSurveyResultParams): Promise<SurveyResultModel> {
-      return new Promise(resolve => resolve(makeFakeSurveyResult()))
+      return new Promise(resolve => resolve(mockSurveyResultModel()))
     }
   }
   return new SaveSurveyResultStub()
 }
-
-const makeFakeSurvey = (): SurveyModel => ({
-  id: 'any_survey_id',
-  question: 'any_question',
-  answers: [{
-    image: 'any_image',
-    answer: 'any_answer'
-  }],
-  date: new Date()
-})
-
-const makeFakeSurveyResult = (): SurveyResultModel => ({
-  id: 'any_survey_result_id',
-  surveyId: 'any_survey_id',
-  accountId: 'any_account_id',
-  answer: 'any_answer',
-  date: new Date()
-})
 
 const makeFakeRequest = (): HttpRequest => ({
   params: {
@@ -133,6 +115,6 @@ describe('SaveSurveyResult Controller', () => {
   test('Should return 200 on success', async () => {
     const { sut } = makeSut()
     const response = await sut.handle(makeFakeRequest())
-    expect(response).toEqual(success(makeFakeSurveyResult()))
+    expect(response).toEqual(success(mockSurveyResultModel()))
   })
 })
