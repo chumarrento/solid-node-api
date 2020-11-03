@@ -1,7 +1,8 @@
-import { LoadSurveyByIdRepository, SurveyModel } from './db-load-survey-by-id-protocols'
+import { LoadSurveyByIdRepository } from './db-load-survey-by-id-protocols'
 import { DbLoadSurveyById } from './db-load-survey-by-id'
 import Mockdate from 'mockdate'
 import { mockSurveyModel } from '@/domain/test'
+import { mockLoadSurveyByIdRepository } from '@/data/test'
 
 type SutTypes = {
   sut: DbLoadSurveyById
@@ -9,22 +10,12 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const loadSurveyByIdRepositoryIdStub = makeLoadSurveyByIdRepositoryIdStub()
+  const loadSurveyByIdRepositoryIdStub = mockLoadSurveyByIdRepository()
   const sut = new DbLoadSurveyById(loadSurveyByIdRepositoryIdStub)
   return {
     sut,
     loadSurveyByIdRepositoryIdStub
   }
-}
-
-const makeLoadSurveyByIdRepositoryIdStub = (): LoadSurveyByIdRepository => {
-  class LoadSurveyByIdRepositoryStub implements LoadSurveyByIdRepository {
-    async loadById (id: string): Promise<SurveyModel> {
-      return new Promise(resolve => resolve(mockSurveyModel()))
-    }
-  }
-
-  return new LoadSurveyByIdRepositoryStub()
 }
 
 describe('DbLoadSurveyById', () => {

@@ -1,12 +1,11 @@
-import { mockEncrypter, mockHashComparer } from '@/data/test'
-import { mockAccountModel, mockAuthenticationParams } from '@/domain/test'
+import { mockEncrypter, mockHashComparer, mockLoadAccountByEmailRepository, mockUpdateAccessTokenRepository } from '@/data/test'
+import { mockAuthenticationParams } from '@/domain/test'
 import { DbAuthentication } from './db-authentication'
 import {
   UpdateAccessTokenRepository,
   Encrypter,
   HashComparer,
-  LoadAccountByEmailRepository,
-  AccountModel
+  LoadAccountByEmailRepository
 } from './db-authentication-protocols'
 
 type SutTypes = {
@@ -18,10 +17,10 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepositoryStub()
+  const loadAccountByEmailRepositoryStub = mockLoadAccountByEmailRepository()
   const hashComparerStub = mockHashComparer()
   const encrypterStub = mockEncrypter()
-  const updateAccessTokenRepositoryStub = makeUpdateAccessTokenRepositoryStub()
+  const updateAccessTokenRepositoryStub = mockUpdateAccessTokenRepository()
   const sut = new DbAuthentication(
     loadAccountByEmailRepositoryStub,
     hashComparerStub,
@@ -35,24 +34,6 @@ const makeSut = (): SutTypes => {
     encrypterStub,
     updateAccessTokenRepositoryStub
   }
-}
-
-const makeLoadAccountByEmailRepositoryStub = (): LoadAccountByEmailRepository => {
-  class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepository {
-    async loadByEmail (email: string): Promise<AccountModel> {
-      return new Promise(resolve => resolve(mockAccountModel()))
-    }
-  }
-  return new LoadAccountByEmailRepositoryStub()
-}
-
-const makeUpdateAccessTokenRepositoryStub = (): UpdateAccessTokenRepository => {
-  class UpdateAccessTokenRepositoryStub implements UpdateAccessTokenRepository {
-    async updateAccessToken (id: string, token: string): Promise<void> {
-      return new Promise(resolve => resolve())
-    }
-  }
-  return new UpdateAccessTokenRepositoryStub()
 }
 
 describe('DbAuthentication UseCase', () => {
