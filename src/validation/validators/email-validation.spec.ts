@@ -2,6 +2,7 @@ import { Validation } from '@/presentation/protocols'
 import { InvalidParamError } from '@/presentation/errors'
 import { EmailValidator } from '@/validation/protocols/email-validator'
 import { EmailValidation } from './email-validator'
+import { mockEmailValidator } from '../test'
 
 type SutTypes = {
   sut: Validation
@@ -9,22 +10,12 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const emailValidatorStub = makeEmailValidator()
+  const emailValidatorStub = mockEmailValidator()
   const sut = new EmailValidation('email', emailValidatorStub)
   return {
     sut,
     emailValidatorStub
   }
-}
-
-const makeEmailValidator = (): EmailValidator => {
-  class EmailValidatorStub implements EmailValidator {
-    isValid (email: string): boolean {
-      return true
-    }
-  }
-
-  return new EmailValidatorStub()
 }
 
 describe('SignUp Controller', () => {

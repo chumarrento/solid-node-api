@@ -8,7 +8,7 @@ import app from '@/main/config/app'
 let surveyCollection: Collection
 let accountCollection: Collection
 
-const makeAccessToken = async (): Promise<string> => {
+const mockAccessToken = async (): Promise<string> => {
   const res = await accountCollection.insertOne({
     name: 'Test Name',
     email: 'test_email@email.com',
@@ -71,7 +71,7 @@ describe('Survey Routes', () => {
     })
 
     test('Should return 204 on add survey with valid accessToken', async () => {
-      const accessToken = await makeAccessToken()
+      const accessToken = await mockAccessToken()
 
       await request(app)
         .post('/api/surveys')
@@ -97,7 +97,7 @@ describe('Survey Routes', () => {
     })
 
     test('Should return 204 on load empty list of surveys with valid accessToken', async () => {
-      const accessToken = await makeAccessToken()
+      const accessToken = await mockAccessToken()
 
       await request(app)
         .get('/api/surveys')
@@ -106,7 +106,7 @@ describe('Survey Routes', () => {
     })
 
     test('Should return 200 on load surveys with valid accessToken', async () => {
-      const accessToken = await makeAccessToken()
+      const accessToken = await mockAccessToken()
       await createSurveys()
 
       await request(app)
