@@ -1,11 +1,16 @@
+import { AuthenticationModel } from '@/domain/models/authentication'
 import { Authentication, AuthenticationParams } from '@/domain/usecases/account/auth/authentication'
+import faker from 'faker'
 
-export const mockAuthentication = (): Authentication => {
-  class AutheticationStub implements Authentication {
-    async auth (authentication: AuthenticationParams): Promise<string> {
-      return new Promise(resolve => resolve('any_token'))
-    }
+export class AuthenticationSpy implements Authentication {
+  authenticationParams: AuthenticationParams
+  authenticationModel = {
+    accessToken: faker.random.uuid(),
+    name: faker.name.findName()
   }
 
-  return new AutheticationStub()
+  async auth (authentication: AuthenticationParams): Promise<AuthenticationModel> {
+    this.authenticationParams = authentication
+    return Promise.resolve(this.authenticationModel)
+  }
 }
