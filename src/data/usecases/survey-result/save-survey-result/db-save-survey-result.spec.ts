@@ -48,6 +48,7 @@ describe('DbSaveSurveyResult', () => {
     const surveyResultData = mockSaveSurveyResultParams()
     await sut.save(surveyResultData)
     expect(loadSurveyResultRepositorySpy.surveyId).toBe(surveyResultData.surveyId)
+    expect(loadSurveyResultRepositorySpy.accountId).toBe(surveyResultData.accountId)
   })
 
   test('Should throw if LoadSurveyResultRepository throws', async () => {
