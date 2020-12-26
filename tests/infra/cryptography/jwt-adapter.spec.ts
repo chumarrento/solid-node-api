@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import { JwtAdapter } from '@/infra/criptography'
+import { JwtAdapter } from '@/infra/cryptography'
 
 const makeSut = (): JwtAdapter => {
   return new JwtAdapter('secret')
