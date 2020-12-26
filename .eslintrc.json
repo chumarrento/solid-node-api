@@ -7,6 +7,8 @@
       "@typescript-eslint/comma-spacing": "off",
       "@typescript-eslint/return-await": "off",
       "@typescript-eslint/strict-boolean-expressions": "off",
-      "@typescript-eslint/consistent-type-definitions": "off"
+      "@typescript-eslint/consistent-type-definitions": "off",
+      "@typescript-eslint/no-namespace": "off",
+      "import/export": "off"
     }
 }
