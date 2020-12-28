@@ -1,4 +1,3 @@
-import { AccountModel } from '@/domain/models'
 import { mockAddAccountParams, mockAddSurveyParams } from '@/tests/domain/mocks'
 import { Collection } from 'mongodb'
 import { MongoHelper, SurveyMongoRepository } from '@/infra/db'
@@ -7,9 +6,9 @@ const makeSut = (): SurveyMongoRepository => {
   return new SurveyMongoRepository()
 }
 
-const mockAccount = async (): Promise<AccountModel> => {
+const mockAccountId = async (): Promise<string> => {
   const res = await accountCollection.insertOne(mockAddAccountParams())
-  return MongoHelper.map(res.ops[0])
+  return res.ops[0]._id
 }
 
 let surveyCollection: Collection
@@ -46,18 +45,18 @@ describe('Survey Mongo Repository', () => {
 
   describe('loadAll()', () => {
     test('Should load all on success', async () => {
-      const account = await mockAccount()
+      const accountId = await mockAccountId()
       const addSurveyModels = [mockAddSurveyParams(), mockAddSurveyParams()]
       const result = await surveyCollection.insertMany(addSurveyModels)
       const survey = result.ops[0]
       await surveyResultCollection.insertOne({
-        accountId: account.id,
+        accountId: accountId,
         surveyId: survey._id,
         answer: survey.answers[0].answer,
         date: new Date()
       })
       const sut = makeSut()
-      const surveys = await sut.loadAll(account.id)
+      const surveys = await sut.loadAll(accountId)
       expect(surveys.length).toBe(2)
       expect(surveys[0].id).toBeTruthy()
       expect(surveys[0].question).toBe(addSurveyModels[0].question)
@@ -68,8 +67,8 @@ describe('Survey Mongo Repository', () => {
 
     test('Should load empty list', async () => {
       const sut = makeSut()
-      const account = await mockAccount()
-      const surveys = await sut.loadAll(account.id)
+      const accountId = await mockAccountId()
+      const surveys = await sut.loadAll(accountId)
       expect(surveys.length).toBe(0)
     })
   })
