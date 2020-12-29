@@ -2,43 +2,43 @@ import { Hasher, Decrypter, Encrypter, HashComparer } from '@/data/protocols'
 import faker from 'faker'
 
 export class HasherSpy implements Hasher {
-  digest = faker.random.uuid()
+  result = faker.random.uuid()
   plaintext: string
 
   async hash (plaintext: string): Promise<string> {
     this.plaintext = plaintext
-    return Promise.resolve(this.digest)
+    return this.result
   }
 }
 
 export class DecrypterSpy implements Decrypter {
-  plaintext = faker.internet.password()
+  result = faker.internet.password()
   ciphertext: string
 
   async decrypt (ciphertext: string): Promise<string> {
     this.ciphertext = ciphertext
-    return Promise.resolve(this.plaintext)
+    return this.result
   }
 }
 
 export class HashComparerSpy implements HashComparer {
   plaintext: string
   digest: string
-  isValid = true
+  result = true
 
   async compare (plaintext: string, digest: string): Promise<boolean> {
     this.plaintext = plaintext
     this.digest = digest
-    return Promise.resolve(this.isValid)
+    return this.result
   }
 }
 
 export class EncrypterSpy implements Encrypter {
-  ciphertext = faker.random.uuid()
+  result = faker.random.uuid()
   plaintext: string
 
   async encrypt (plaintext: string): Promise<string> {
     this.plaintext = plaintext
-    return Promise.resolve(this.ciphertext)
+    return this.result
   }
 }

@@ -14,12 +14,12 @@ export class AddSurveySpy implements AddSurvey {
 }
 
 export class LoadSurveysSpy implements LoadSurveys {
-  surveysList = mockSurveysList()
+  result = mockSurveysList()
   accountId: string
 
   async load (accountId: string): Promise<LoadSurveys.Result> {
     this.accountId = accountId
-    return Promise.resolve(this.surveysList)
+    return this.result
   }
 }
 

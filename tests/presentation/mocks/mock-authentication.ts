@@ -3,13 +3,13 @@ import faker from 'faker'
 
 export class AuthenticationSpy implements Authentication {
   authenticationParams: Authentication.Params
-  authenticationModel = {
+  result = {
     accessToken: faker.random.uuid(),
     name: faker.name.findName()
   }
 
   async auth (authentication: Authentication.Params): Promise<Authentication.Result> {
     this.authenticationParams = authentication
-    return Promise.resolve(this.authenticationModel)
+    return this.result
   }
 }

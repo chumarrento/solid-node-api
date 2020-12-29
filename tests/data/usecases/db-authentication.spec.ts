@@ -69,7 +69,7 @@ describe('DbAuthentication UseCase', () => {
 
   test('Should return null HashComparer returns false', async () => {
     const { sut, hashComparerSpy } = makeSut()
-    hashComparerSpy.isValid = false
+    hashComparerSpy.result = false
     const accessToken = await sut.auth(mockAuthenticationParams())
     expect(accessToken).toBeNull()
   })
@@ -90,7 +90,7 @@ describe('DbAuthentication UseCase', () => {
   test('Should return a authentication model on success', async () => {
     const { sut, encrypterSpy, loadAccountByEmailRepositorySpy } = makeSut()
     const { accessToken, name } = await sut.auth(mockAuthenticationParams())
-    expect(accessToken).toBe(encrypterSpy.ciphertext)
+    expect(accessToken).toBe(encrypterSpy.result)
     expect(name).toBe(loadAccountByEmailRepositorySpy.result.name)
   })
 
@@ -98,7 +98,7 @@ describe('DbAuthentication UseCase', () => {
     const { sut, updateAccessTokenRepositorySpy, loadAccountByEmailRepositorySpy, encrypterSpy } = makeSut()
     await sut.auth(mockAuthenticationParams())
     expect(updateAccessTokenRepositorySpy.id).toBe(loadAccountByEmailRepositorySpy.result.id)
-    expect(updateAccessTokenRepositorySpy.token).toBe(encrypterSpy.ciphertext)
+    expect(updateAccessTokenRepositorySpy.token).toBe(encrypterSpy.result)
   })
 
   test('Should throw if UpdateAccessTokenRepository throws', async () => {
