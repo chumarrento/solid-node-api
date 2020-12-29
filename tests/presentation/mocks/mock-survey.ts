@@ -1,7 +1,6 @@
 import { AddSurvey } from '@/domain/usecases/add-survey'
 import { mockSurveysList } from '@/tests/domain/mocks'
 import { LoadSurveys } from '@/domain/usecases/load-surveys'
-import { SurveyModel } from '@/domain/models/survey'
 import { CheckSurveyById, LoadAnswersBySurvey } from '@/domain/usecases'
 
 import faker from 'faker'
@@ -18,7 +17,7 @@ export class LoadSurveysSpy implements LoadSurveys {
   surveysList = mockSurveysList()
   accountId: string
 
-  async load (accountId: string): Promise<SurveyModel[]> {
+  async load (accountId: string): Promise<LoadSurveys.Result> {
     this.accountId = accountId
     return Promise.resolve(this.surveysList)
   }
