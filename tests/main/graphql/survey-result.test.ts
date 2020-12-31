@@ -113,5 +113,17 @@ describe('Survey Result GraphQL', () => {
       }])
       expect(res.data.surveyResult.date).toBe(survey.date.toISOString())
     })
+
+    test('Should return AccessDeniedError if no token is provided', async () => {
+      const survey = await mockSurvey()
+      const { query } = createTestClient({ apolloServer })
+      const res: any = await query(surveyResultQuery, {
+        variables: {
+          surveyId: survey.id.toString()
+        }
+      })
+      expect(res.data).toBeFalsy()
+      expect(res.errors[0].message).toBe('AccessDeniedError: Access Denied.')
+    })
   })
 })
