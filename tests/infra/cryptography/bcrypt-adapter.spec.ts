@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt'
 import { BcryptAdapter } from '@/infra/cryptography'
+import { throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: BcryptAdapter
@@ -41,7 +42,7 @@ describe('Bcrypt Adapter', () => {
 
     test('Should throw if hash throws', async () => {
       const { sut } = makeSut()
-      jest.spyOn(bcrypt, 'hash').mockRejectedValueOnce(new Error())
+      jest.spyOn(bcrypt, 'hash').mockImplementationOnce(throwError)
       const promise = sut.hash('any_value')
       await expect(promise).rejects.toThrow()
     })
@@ -63,14 +64,14 @@ describe('Bcrypt Adapter', () => {
 
     test('Should return false when compare fails', async () => {
       const { sut } = makeSut()
-      jest.spyOn(bcrypt, 'compare').mockResolvedValueOnce(false)
+      jest.spyOn(bcrypt, 'compare').mockImplementationOnce(() => false)
       const isValid = await sut.compare('any_value', 'any_hash')
       expect(isValid).toBeFalsy()
     })
 
     test('Should throw if compare throws', async () => {
       const { sut } = makeSut()
-      jest.spyOn(bcrypt, 'compare').mockRejectedValueOnce(new Error())
+      jest.spyOn(bcrypt, 'compare').mockImplementationOnce(throwError)
       const promise = sut.compare('any_value', 'any_hash')
       await expect(promise).rejects.toThrow()
     })
