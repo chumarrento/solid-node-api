@@ -20,7 +20,7 @@ const mockAccessToken = async (): Promise<string> => {
     email: 'test_email@email.com',
     password: 'test_password'
   })
-  const id = res.ops[0]._id
+  const id = res.insertedId
   const accessToken = sign({ id }, env.jwtSecret)
   await accountCollection.updateOne({
     _id: id
@@ -41,8 +41,8 @@ const mockSurvey = async (): Promise<SurveyModel> => {
     }],
     date: new Date()
   })
-
-  return MongoHelper.map(res.ops[0])
+  const survey = await surveyCollection.findOne({ _id: res.insertedId })
+  return MongoHelper.map(survey)
 }
 
 describe('Survey Result GraphQL', () => {
@@ -59,13 +59,13 @@ describe('Survey Result GraphQL', () => {
   })
 
   beforeEach(async () => {
-    surveyCollection = await MongoHelper.getCollection('surveys')
+    surveyCollection = MongoHelper.getCollection('surveys')
     await surveyCollection.deleteMany({})
 
-    accountCollection = await MongoHelper.getCollection('accounts')
+    accountCollection = MongoHelper.getCollection('accounts')
     await accountCollection.deleteMany({})
 
-    surveyResultCollection = await MongoHelper.getCollection('surveyResults')
+    surveyResultCollection = MongoHelper.getCollection('surveyResults')
     await surveyResultCollection.deleteMany({})
   })
 

@@ -3,14 +3,14 @@ import { SaveSurveyResult } from '@/domain/usecases'
 import faker from 'faker'
 
 export const mockSaveSurveyResultParams = (): SaveSurveyResult.Params => ({
-  accountId: faker.random.uuid(),
-  surveyId: faker.random.uuid(),
+  accountId: faker.datatype.uuid(),
+  surveyId: faker.datatype.uuid(),
   answer: faker.random.word(),
   date: faker.date.recent()
 })
 
 export const mockSurveyResultModel = (): SurveyResultModel => ({
-  surveyId: faker.random.uuid(),
+  surveyId: faker.datatype.uuid(),
   question: faker.random.words(),
   answers: [{
     answer: faker.random.word(),
@@ -28,7 +28,7 @@ export const mockSurveyResultModel = (): SurveyResultModel => ({
 })
 
 export const mockEmptySurveyResultModel = (): SurveyResultModel => ({
-  surveyId: faker.random.uuid(),
+  surveyId: faker.datatype.uuid(),
   question: faker.random.words(),
   answers: [{
     answer: faker.random.word(),

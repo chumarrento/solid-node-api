@@ -13,7 +13,7 @@ export class AddAccountSpy implements AddAccount {
 }
 
 export class LoadAccountByTokenSpy implements LoadAccountByToken {
-  result = { id: faker.random.uuid() }
+  result = { id: faker.datatype.uuid() }
   accessToken: string
   role: string
 

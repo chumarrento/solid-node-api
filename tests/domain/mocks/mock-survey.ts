@@ -14,7 +14,7 @@ export const mockAddSurveyParams = (): AddSurvey.Params => ({
 })
 
 export const mockSurveyModel = (): SurveyModel => Object.assign(mockAddSurveyParams(), {
-  id: faker.random.uuid()
+  id: faker.datatype.uuid()
 })
 
 export const mockSurveysList = (): SurveyModel[] => [

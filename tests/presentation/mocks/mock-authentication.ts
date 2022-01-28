@@ -4,7 +4,7 @@ import faker from 'faker'
 export class AuthenticationSpy implements Authentication {
   authenticationParams: Authentication.Params
   result = {
-    accessToken: faker.random.uuid(),
+    accessToken: faker.datatype.uuid(),
     name: faker.name.findName()
   }
 

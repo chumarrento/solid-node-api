@@ -30,7 +30,7 @@ describe('DbLoadSurveyById', () => {
   })
 
   beforeEach(() => {
-    surveyId = faker.random.uuid()
+    surveyId = faker.datatype.uuid()
   })
 
   test('Should call LoadSurveyByIdRepository with correct id', async () => {

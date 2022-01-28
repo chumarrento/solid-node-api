@@ -19,7 +19,7 @@ const makeSut = (role?: string): SutTypes => {
 }
 
 const mockrequest = (): AuthMiddleware.Request => ({
-  accessToken: faker.random.uuid()
+  accessToken: faker.datatype.uuid()
 })
 
 const role = faker.random.word()
