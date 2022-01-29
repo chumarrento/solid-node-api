@@ -1,14 +1,21 @@
-import express from 'express'
-import setupMiddlewares from './middlewares'
-import setupApolloServer from './apollo-server'
-import setupRoutes from './routes'
-import setupSwagger from './swagger'
-import setupStaticFiles from './static-files'
+import express, { Express } from 'express'
 
-const app = express()
-setupApolloServer(app)
-setupStaticFiles(app)
-setupSwagger(app)
-setupMiddlewares(app)
-setupRoutes(app)
-export default app
+import setupMiddlewares from '@/main/config/middlewares'
+import setupRoutes from '@/main/config/routes'
+import setupSwagger from '@/main/config/swagger'
+import setupStaticFiles from '@/main/config/static-files'
+import { setupApolloServer } from '../graphql/apollo'
+
+export const setupApp = async (): Promise<Express> => {
+  const app = express()
+  setupStaticFiles(app)
+  setupSwagger(app)
+  setupMiddlewares(app)
+  setupRoutes(app)
+
+  const apolloServer = setupApolloServer()
+  await apolloServer.start()
+  apolloServer.applyMiddleware({ app })
+
+  return app
+}

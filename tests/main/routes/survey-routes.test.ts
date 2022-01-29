@@ -1,12 +1,15 @@
-import { sign } from 'jsonwebtoken'
-import { Collection } from 'mongodb'
 import env from '@/main/config/env'
 import request from 'supertest'
 import { MongoHelper } from '@/infra/db'
-import app from '@/main/config/app'
+import { setupApp } from '@/main/config/app'
+
+import { sign } from 'jsonwebtoken'
+import { Collection } from 'mongodb'
+import { Express } from 'express'
 
 let surveyCollection: Collection
 let accountCollection: Collection
+let app: Express
 
 const mockAccessToken = async (): Promise<string> => {
   const res = await accountCollection.insertOne({
@@ -40,6 +43,7 @@ const createSurveys = async (): Promise<void> => {
 
 describe('Survey Routes', () => {
   beforeAll(async () => {
+    app = await setupApp()
     await MongoHelper.connect(process.env.MONGO_URL)
   })
 

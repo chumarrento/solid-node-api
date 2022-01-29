@@ -1,14 +1,17 @@
 import { MongoHelper } from '@/infra/db'
 import request from 'supertest'
-import app from '@/main/config/app'
+import { setupApp } from '@/main/config/app'
 
 import { Collection } from 'mongodb'
 import { hash } from 'bcrypt'
+import { Express } from 'express'
 
 let accountCollection: Collection
+let app: Express
 
 describe('Login GraphQL', () => {
   beforeAll(async () => {
+    app = await setupApp()
     await MongoHelper.connect(process.env.MONGO_URL)
   })
 
